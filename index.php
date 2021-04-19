@@ -1,355 +1,153 @@
-<?php
-session_start();
-date_default_timezone_set( 'Europe/Paris' );
+<div class="row">
+  <div class="col-md-6">
 
-if(isset(parse_url($_SERVER["REQUEST_URI"])["query"]))
-{
-  parse_str(parse_url($_SERVER["REQUEST_URI"])["query"], $node);
-  if(isset($node["follow"]))
-  {
-    header("Location: " . $node["follow"]);
-  }
-}
+<form id="formCNI" action="content/cni/generate_preview.php" method="post" target="preview" enctype="multipart/form-data">
+    <h2><?php echo L::page_base; ?></h2>
+    <h5 style="color:#ff0000"><?php echo L::page_required; ?></h5>
+    <div>
+        <label for="effect"><?php echo L::field_effect; ?> <span style="color:#ff0000">*</span> :</label>
+        <input class="form-control-light" max="100" min="0" type="range" name="effect" value='<?php if (isset($_SESSION["Form"]["effect"])) { echo $_SESSION["Form"]["effect"]; } else { echo "0"; }?>' required/>
+    </div>
+    <br />
+    <div>
+        <label for="lastname"><?php echo L::field_lastname; ?> <span style="color:#ff0000">*</span> :</label>
+        <input class="form-control" type="text" name="lastname" placeholder="Ex: Nemmard" value='<?php if (isset($_SESSION["Form"]["lastname"])) echo $_SESSION["Form"]["lastname"]; ?>' required/>
+    </div>
+    <div>
+        <label for="firstname"><?php echo L::field_firstnames; ?> <span style="color:#ff0000">*</span> :</label>
+        <input class="form-control" type="text" name="firstname" placeholder="Ex: Jean" value='<?php if (isset($_SESSION["Form"]["firstname"])) echo $_SESSION["Form"]["firstname"]; ?>' required/>
+                <br><span class="fieldsub">Séparez les prénoms avec une virgule</span>
+    </div>
+    <br>
+    <div>
+        <label for="gender"><?php echo L::field_gender; ?> <span style="color:#ff0000">*</span> :</label>
+        <select class="form-control" name="gender" required>
+          <option value="M" value='<?php if (isset($_SESSION["Form"]["gender"]) && $_SESSION["Form"]["gender"]=="M") echo "selected"; ?>'><?php echo L::field_man; ?></option>
+          <option value="F" value='<?php if (isset($_SESSION["Form"]["gender"]) && $_SESSION["Form"]["gender"]=="F") echo "selected"; ?>'><?php echo L::field_woman; ?></option>
+        </select>
+    </div>
+    <div>
+        <label for="tall"><?php echo L::field_tall; ?> <span style="color:#ff0000">*</span> :</label>
+        <input class="form-control" type="text" name="tall" placeholder="Ex: 180" value='<?php if (isset($_SESSION["Form"]["tall"])) echo $_SESSION["Form"]["tall"]; ?>' required/>
+    </div>
+    <br>
+    <div>
+        <label for="birthdate"><?php echo L::field_birthdate; ?> <span style="color:#ff0000">*</span> :</label>
+        <input class="form-control" type="text" name="birthdate" placeholder="JJ/MM/YYYY" maxlength="10" value='<?php if (isset($_SESSION["Form"]["birthdate"])) echo $_SESSION["Form"]["birthdate"]; ?>' required/>
+    </div>
+    <div>
+        <label for="birthcity"><?php echo L::field_birthcity; ?> <span style="color:#ff0000">*</span> :</label>
+        <input class="form-control" type="text" name="birthcity" placeholder="Ex: Paris" value='<?php if (isset($_SESSION["Form"]["birthcity"])) echo $_SESSION["Form"]["birthcity"]; ?>' required/>
+    </div>
+    <br>
+    <?php echo L::page_backcni; ?>
+    <h2></h2>
+    <div>
+        <label for="address"><?php echo L::field_address; ?> <span style="color:#ff0000">*</span> :</label>
+        <input class="form-control" type="text" name="address" placeholder="Ex: 10 rue Saint André" value='<?php if (isset($_SESSION["Form"]["address"])) echo $_SESSION["Form"]["address"]; ?>' required/>
+    </div>
+    <div>
+        <label for="address_city"><?php echo L::field_address_city; ?> <span style="color:#ff0000">*</span> :</label>
+        <input class="form-control" type="text" name="address_city" placeholder="Ex: Paris" value='<?php if (isset($_SESSION["Form"]["address_city"])) echo $_SESSION["Form"]["address_city"]; ?>' required/>
+    </div>
+    <div>
+        <label for="address_zipcode"><?php echo L::field_address_zipcode; ?> <span style="color:#ff0000">*</span> :</label>
+        <input class="form-control" type="text" name="address_zipcode" placeholder="Ex: 75001" value='<?php if (isset($_SESSION["Form"]["address_zipcode"])) echo $_SESSION["Form"]["address_zipcode"]; ?>' required/>
+    </div>
+    <br>
+    <div>
+        <label for="prefecture"><?php echo L::field_prefecture; ?> <span style="color:#ff0000">*</span> :</label>
+        <input class="form-control special" type="text" name="prefecture" placeholder="Ex: Sous-préfecture de Brest" value='<?php if (isset($_SESSION["Form"]["prefecture"])) echo $_SESSION["Form"]["prefecture"]; ?>' required/>
+        <a class="button" href="#popup1"><?php echo L::field_needhelp ?></a><br>
+    </div>
+    <div>
+        <label for="prefecture_department"><?php echo L::field_prefecture_department; ?> <span style="color:#ff0000">*</span> :</label>
+        <input class="form-control" type="number" name="prefecture_department" min="0" max="999" placeholder="Ex: 75" value='<?php if (isset($_SESSION["Form"]["prefecture_department"])) echo $_SESSION["Form"]["prefecture_department"]; ?>' required/>
+    </div>
+    <div>
+        <label for="deliverydate"><?php echo L::field_deliverydatecni; ?> <span style="color:#ff0000">*</span> :</label>
+        <input class="form-control" type="text" name="deliverydate" placeholder="JJ/MM/YYYY" maxlength="10" value='<?php if (isset($_SESSION["Form"]["deliverydate"])) echo $_SESSION["Form"]["deliverydate"]; ?>' required/>
+    </div>
+    <br>
+    <hr />
+    <h2><?php echo L::page_norequired; ?></h2>
+    <h3><?php echo L::page_images; ?></h3>
+    <?php echo L::page_norequiredfieldsimage; ?>
+    <div>
+        <label for="photo"><?php echo L::field_photo; ?> :</label>
+        <input type="file" name="photo" accept="image/*" value='<?php if (isset($_SESSION["Form"]["photo"])) echo $_SESSION["Form"]["photo"]; ?>'/>
+        <a class="button" href="#popup2">476x624px</a>
+        <br><a class="fieldsub" target="_blank" href="gallery"><?php echo L::field_gallery; ?></a>
+    </div>
+    <p><?php echo L::page_png; ?></p>
+    <div>
+        <label for="sign1"><?php echo L::field_signature; ?> :</label>
+        <input type="file" name="sign1" accept="image/*" value='<?php if (isset($_SESSION["Form"]["sign1"])) echo $_SESSION["Form"]["sign1"]; ?>'/>
+        <a class="button" href="#popup3">650x170px</a>
+    </div>
+    <div>
+        <label for="sign2"><?php echo L::field_stamppref; ?> :</label>
+        <input type="file" name="sign2" accept="image/*" value='<?php if (isset($_SESSION["Form"]["sign2"])) echo $_SESSION["Form"]["sign2"]; ?>'/>
+        <a class="button" href="#popup3">850x175px</a>
+    </div>
+    <br>
+    <h3><?php echo L::page_suppl; ?></h3>
+    <?php echo L::page_norequiredfields; ?>
+    <div>
+        <label for="cninumber"><?php echo L::field_cninumber; ?> :</label>
+        <input class="form-control" type="text" name="cninumber" maxlength="12" value='<?php if (isset($_SESSION["Form"]["cninumber"])) echo $_SESSION["Form"]["cninumber"]; ?>' />
+    </div>
+    <div>
+        <label for="cnialgo1"><?php echo L::field_cnialgo1; ?> :</label>
+        <input class="form-control" type="text" name="cnialgo1" maxlength="36" value='<?php if (isset($_SESSION["Form"]["cnialgo1"])) echo $_SESSION["Form"]["cnialgo1"]; ?>' />
+    </div>
+    <div>
+        <label for="cnialgo2"><?php echo L::field_cnialgo2; ?> :</label>
+        <input class="form-control" type="text" name="cnialgo2" maxlength="36" value='<?php if (isset($_SESSION["Form"]["cnialgo2"])) echo $_SESSION["Form"]["cnialgo2"]; ?>' />
+    </div>
 
-if(isset($_GET["lang"]))
-{
-  $_SESSION["Lang"] = $_GET["lang"];
-}
+    <input type="hidden" name="random" value='<?php echo rand(100, 9999); ?>' />
 
-if(!isset($_SESSION["Lang"]))
-{
-  $_SESSION["Lang"] = "fr";
-}
+    <br><br>
 
-if(isset($_POST["changelang"]))
-{
-  $_SESSION["Lang"] = $_POST["lang"];
-}
+    <button id="buttonPreviewCNI" class="button-secondary pure-button" form="formCNI" style="float:left;"><?php echo L::field_submit; ?></button>
+    <button type="reset" class="button-secondary pure-button" style="float:left; background-color:#ff4444; margin-left:10px;"><?php echo L::field_reset; ?></button>
+</form>
 
-require_once "resources/i18n.class.php";
-$i18n = new i18n('resources/lang/lang_{LANGUAGE}.ini', 'resources/langcache/', 'en');
-$i18n->setFallbackLang('en');
-$i18n->setForcedLang($_SESSION["Lang"]) ;
-$i18n->init();
-
-if(!isset($_SESSION["Form"]["effect"]))
-{
-  $_SESSION["Form"]["effect"] = 0;
-}
-
-$_SESSION["bypass"] = false;
-
-
-if(basename($_SERVER['REQUEST_URI']) !="")
-{
-  $page = basename($_SERVER['REQUEST_URI']);
-}
-else
-{
-  $page = "default";
-}
-
-
-?><!DOCTYPE html>
-<html lang="en">
-<!--
- _____                   _____                           _
-/  ___|                 |  __ \                         | |
-\ `--.  ___ __ _ _ __   | |  \/ ___ _ __   ___ _ __ __ _| |_ ___  _ __
- `--. \/ __/ _` | '_ \  | | __ / _ \ '_ \ / _ \ '__/ _` | __/ _ \| '__|
-/\__/ / (_| (_| | | | | | |_\ \  __/ | | |  __/ | | (_| | || (_) | |
-\____/ \___\__,_|_| |_|  \____/\___|_| |_|\___|_|  \__,_|\__\___/|_|
-
-Forever here.
--->
-<head>
-  <?php
-  if(isset($_GET["goto"]))
-  {
-    echo '<meta http-equiv="refresh" content="1; url=mon-panier">';
-  }
-
-  if(isset($_GET["product"]))
-  {
-  	$product = $_GET["product"];
-  }
-
-  if ($page=="payment") {
-
-    $_SESSION["bypass"] = true;
-    if(isset($_POST["uid"]))
-    {
-      $_SESSION["Command"][$_POST["uid"]]["valid"] = true;
-      $_SESSION["final_address"] = $btc_address;
-    }
-    if(isset($_GET["action"]))
-    {
-      switch($_GET["action"])
-      {
-        case "remove":
-          unset($_SESSION["Command"][$_GET["id"]]);
-        break;
-      }
-    }
-
-    $totalEUR = 0;
-    $totalBTC = 0;
-    $iterator = 0;
-  }
-  ?>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title><?php echo L::title; ?> // Générateur de faux documents / CNI / JDD / FDP / SCANS / Factures / Vrai documents / </title>
-    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="resources/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="resources/css/app/app.v1.css" />
-    <link rel="stylesheet" type="text/css" href="resources/css/style.css" />
-
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600|Raleway:400,500,600,700,300' rel='stylesheet' type='text/css' />
-    <link href="static/favicon.png" rel="icon" type="image/png" />
-
-</head>
-<body data-ng-app>
-  <?php
-  if(isset($_SERVER["HTTP_X_TOR2WEB"]))
-  {
-    echo L::tor;
-  }
-  ?>
-	<aside class="left-panel">
-
-            <div class="user text-center">
-                  <a href="/"><img src="static/favicon.png" class="img-circle" alt="...">
-                  <h4 class="user-name">Auto'Scan <sup><small>4.0</small></sup></h4></a>
-
-                  <div class="dropdown user-login">
-                    <form action="" method="post" style='margin-bottom:0px;'>
-                      <input type="hidden" name="changelang" value="true">
-                      <?php
-                      if($_SESSION["Lang"] == "fr")
-                      {
-                        ?>
-                      <button class="btn btn-xs dropdown-toggle btn-rounded" type="button" data-toggle="dropdown" aria-expanded="true">
-                        <img src="static/fr.png" class="lang-choose" /> Français <i class="fa fa-angle-down"></i>
-                      </button>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                        <input type="hidden" name="lang" value="en">
-                        <li><button class="langButton" type="submit"><img src="static/en.png" class="lang-choose" /> Anglais</button></li>
-                      </ul>
-                        <?php
-                      }
-                      else
-                      {
-                        ?>
-                      <button class="btn btn-xs dropdown-toggle btn-rounded" type="button" data-toggle="dropdown" aria-expanded="true">
-                        <img src="static/en.png" class="lang-choose" /> English <i class="fa fa-angle-down"></i>
-                      </button>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                        <input type="hidden" name="lang" value="fr">
-                        <li><button class="langButton" type="submit"><img src="static/fr.png" class="lang-choose" /> French</button></li>
-                      </ul>
-                      <?php
-                    }
-                    ?>
-                    </form>
-                  </div>
-            </div>
-            <nav class="navigation">
-            	<ul class="list-unstyled">
-                    <li id="identity" class="has-submenu <?php if($page == "cni" or $page == "decla" or $page == "passeport" or $page == "usapc" or $page == "vitale" or $page == "pdc") {echo 'active';} ?>"><a href="#identity"><i class="fa fa-user"></i> <span class="nav-label"><?php echo L::menu_identity; ?>  <sup><small>Maj</small></sup></span></a>
-                    	<ul class="list-unstyled">
-                        	<li><a href="cni"><?php echo L::menu_cni; ?> <sup><small>Maj</small></sup></a></li>
-                          <li><a href="usapc"><img src="static/us.jpg"> <?php echo L::menu_usapc; ?> <sup><small>Maj</small></sup></a></li>
-                          <li><a href="decla"><?php echo L::menu_decla; ?> <sup><small>Maj</small></sup></a></li>
-                          <li><a href="pdc"><?php echo L::menu_drive; ?></a></li>
-                          <li><a href="vitale"><?php echo L::menu_vitale; ?> <sup><small>Maj</small></sup></a></li>
-                          <li class="notactive"><a href="eupasseport"><?php echo L::menu_eupasseport; ?></a></li>
-                        </ul>
-                    </li>
-                    <li id="address" class="has-submenu <?php if($page == "edf" or $page == "dengy" or $page == "free") {echo 'active';} ?>"><a href="#address"><i class="fa fa-home"></i> <span class="nav-label"><?php echo L::menu_address; ?>  <sup><small>Maj</small></sup></span></a>
-                    	<ul class="list-unstyled">
-                      	<li><a href="edf"><?php echo L::menu_edf; ?></a></li>
-                        <li><a href="free"><?php echo L::menu_facturefree; ?> <sup><small>Maj</small></sup></a></li>
-                        <li><a href="dengy"><?php echo L::menu_den; ?> <sup><small>Maj</small></sup></a></li>
-                      </ul>
-                    </li>
-                    <li class="<?php if($page == "fdp") {echo 'active';} ?>"><a href="fdp"><i class="fa fa-file-text-o"></i> <span class="nav-label"><?php echo L::menu_payslip; ?></span></a></li>
-                    <li class="<?php if($page == "rib") {echo 'active';} ?>"><a href="rib"><i class="fa fa-bank"></i> <span class="nav-label"><?php echo L::menu_rib; ?></span></a></li>
-                    <li id="cc" class="has-submenu <?php if($page == "cc_visa_premier") {echo 'active';} ?>"><a href="#cc"><i class="fa fa-credit-card"></i> <span class="nav-label"><?php echo L::menu_creditcard; ?></span></a>
-                    	<ul class="list-unstyled">
-                        	<li><a href="visa-premier"><?php echo L::menu_visapremier; ?></a></li>
-                        </ul>
-                    </li>
-                    <li id="other" class="has-submenu <?php if($page == "darty" or $page == "bac" or $page == "bts" or $page == "dut") {echo 'active';}?>"><a href="#other"><i class="fa fa-list"></i> <span class="nav-label"><?php echo L::menu_other; ?></span></a>
-                    	<ul class="list-unstyled">
-                        	<li><a href="bac"><?php echo L::menu_bac; ?></a></li>
-                          <li><a href="darty"><?php echo L::menu_darty; ?></a></li>
-                          <li class="notactive"><a href="kbis"><?php echo L::menu_kbis; ?></a></li>
-                          <li class="notactive"><a href="#"><?php echo L::menu_bts; ?></a></li>
-                          <li class="notactive"><a href="#"><?php echo L::menu_dut; ?></a></li>
-                          <li class="notactive"><a href="#"><?php echo L::menu_absence; ?></a></li>
-                          <li class="notactive"><a href="bac"><?php echo L::menu_prescription; ?></a></li>
-
-                          <li></li>
-                          <li></li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <center>
-
-                <form action="index.php" method="GET">
-                <select name="follow">
-                    <option value="about">Accueil</option>
-                    <option></option>
-                    <option value="cni">Carte Nationale d'Identité</option>
-                    <option value="decla">Déclaration perte CNI</option>
-                    <option value="pdc">Permis de conduire</option>
-                    <option value="edf">Facture EDF</option>
-                    <option value="free">Facture Free</option>
-                    <option value="dengy">Facture Direct Energie</option>
-                    <option value="fdp">Fiche de Paie</option>
-                    <option value="cc_visa_premier">Carte Bancaire Visa Premier</option>
-                    <option value="rib">Relevé d'Identité Bancaire</option>
-                    <option value="bac">Diplôme du Baccalauréat</option>
-            <!--         <option value="bts">Diplôme du BTS</option> -->
-                    <option value="vitale">Carte Vitale</option>
-                    <option value="darty">Facture Darty</option>
-                  </select>
-                  <input id="gow" type="submit" value="Go" />
-              </form>
-
-                </center>
-            </nav>
-    </aside>
-    <section class="content">
-        <header class="top-head container-fluid">
-<!--             <button type="button" class="navbar-toggle pull-left">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button> -->
-            <nav class=" navbar-default hidden-xs" role="navigation">
-              <ul class="nav navbar-nav">
-<li><a><?php echo L::welcome; ?></a></li>
-</ul>
-</nav>
-            <ul class="nav-toolbar">
-              <li>
-                <a><?php echo L::btcprice; ?> :
-                    <?php
-                    $BTC_EUR = 500;
-                    echo sprintf("%.0f", $BTC_EUR);
-                    ?>
-                    &euro;</a>
-              </li>
-            </ul>
-        </header>
-        <div class="warper container-fluid">
-          <?php
-          switch($page)
-          {
-            case "cni":
-            include "content/cni/index.php";
-            break;
-
-            case "decla":
-            include "content/decla/index.php";
-            break;
-
-            case "fdp":
-            include "content/fdp/index.php";
-            break;
-
-            case "edf":
-            include "content/edf/index.php";
-            break;
-
-            case "visa-premier":
-            include "content/cc/visa/premier/index.php";
-            break;
-
-            case "rib":
-            include "content/rib/index.php";
-            break;
-
-            case "vitale":
-            include "content/vitale/index.php";
-            break;
-
-            case "darty":
-            include "content/darty/index.php";
-            break;
-
-            case "free":
-            include "content/free/index.php";
-            break;
-
-            case "gallery":
-            include "content/gallery.php";
-            break;
-
-            case "pdc":
-            include "content/pdc/index.php";
-            break;
-
-            case "bac":
-            include "content/bac/index.php";
-            break;
-
-            case "bts":
-            include "content/bts/index.php";
-            break;
-
-            case "dengy":
-            include "content/dengy/index.php";
-            break;
-
-            case "usapc":
-            include "content/usapc/index.php";
-            break;
-
-            case "seller":
-            include "content/seller.php";
-            break;
-
-            case "sales":
-            include "content/sales_tracking.php";
-            break;
-
-            default:
-            ?>
-            <h1><?php echo L::construction_title; ?></h1>
-            <p class="lead"><?php echo L::construction_description; ?></p>
-            <?php
-            break;
-
-            case "about":
-            case "default":
-            ?>
-            <div class="row">
-              <div class="col-md-12">
-                  <h1><?php echo L::home_title; ?></h1>
-                  <p class="lead"><?php echo L::home_nodata; ?></p>
-                  <!--- <p class="red">Pour la version 4.0 <u>Beta</u> il est nécessaire d'activer Javascript, qui ne représente aucun danger en terme d'anonymat.</p> -->
-              </div>
-            </div>
-          <?php
-          setlocale(LC_ALL, 'fr_FR');
-             ?>
-             <br />
-            <?php
-            break;
-          }
-          ?>
+<div id="popup1" class="overlay light">
+    <a class="cancel" href="#"></a>
+    <div class="popup">
+        <h3>Choix de la Préfecture</h3>
+        <div class="content">
+        <p>Sur le site <a href="http://www.annuaire-mairie.fr" target="_blank">http://www.annuaire-mairie.fr</a> vous trouverez pour chaque ville la préfecture ou sous-préfecture qui lui est associé.<br>
+                              Attention aux arrondissements pour les grandes villes.</p>
         </div>
-    </section>
-<!--     <script src="resources/js/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
-    <script src="resources/js/bootstrap/bootstrap.min.js"></script>
-    <script src="resources/js/plugins/nicescroll/jquery.nicescroll.min.js"></script>
-    <script src="resources/js/app/custom.js" type="text/javascript"></script> -->
-</body>
-</html>
+    </div>
+</div>
+
+<div id="popup2" class="overlay light">
+    <a class="cancel" href="#"></a>
+    <div class="popup">
+        <h3>Dimensions recommandées</h3>
+        <div class="content">
+        <p>Afin que le scan soit le plus fidèle possible à une CNI réelle, il est vivement recommandé que les dimensions de la photo d'identité soient de 476x624.<br></p>
+        </div>
+    </div>
+</div>
+
+<div id="popup3" class="overlay light">
+    <a class="cancel" href="#"></a>
+    <div class="popup">
+        <h3>Conseils signatures</h3>
+        <div class="content">
+        <p>Les dimensions indiquées correpondent à <b>l'espace entier où peut se situer la signature</b>. Vous pouvez envoyé une image avec des dimensions différentes, elle ne sera pas redimensionnée.<br><br>
+        N'hésitez donc pas à faire plusieurs tests et adapter les dimensions de votre fichier. Et pensez bien à la transparence de votre signature !<br></p>
+        </div>
+    </div>
+</div>
+
+</div>
+<div class="col-md-6">
+<iframe style="height: 900px; width: 100%; border: 0pt none; overflox: hidden;" name="preview" src="content/cni/empty_preview.php"/></iframe>
+</div>
+</div>
